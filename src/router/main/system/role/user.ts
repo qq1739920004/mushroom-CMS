@@ -1,7 +1,7 @@
 const user = () => import('@/views/main/system/role/user.vue')
 export default {
   path: '/main/system/role',
-  name: 'user',
+  name: 'systemRole',
   component: user,
   children: []
 }

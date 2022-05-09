@@ -26,6 +26,7 @@
                 :is="iconFilter(item2.icon)"
               ></component>
               <el-menu-item
+                @click="routerJump(item2.url)"
                 :index="indexType(index) + '-' + indexType(index2)"
                 >{{ item2.name }}</el-menu-item
               >
@@ -39,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { User, Iphone } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -52,16 +53,22 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const router = useRouter()
     const indexType = (index: number) => {
       return index.toString()
     }
     const iconFilter = (target: string) => {
       return target.replace('el-icon-', '')
     }
+    //路由跳转
+    const routerJump = (url: string) => {
+      router.push(url)
+    }
 
     return {
       indexType,
-      iconFilter
+      iconFilter,
+      routerJump
     }
   }
 })

@@ -14,7 +14,6 @@ app.use(store)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
-
 // const aoo = axios.create({ baseURL: 'http://152.136.185.210:7878/api/hy66' })
 // aoo
 //   .request({
