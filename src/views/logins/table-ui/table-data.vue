@@ -34,15 +34,11 @@ import tablePhone from './table-phone.vue'
 
 import storage from '@/utils/utilsLocalstorage'
 
-import { User, Iphone } from '@element-plus/icons-vue'
-
 export default defineComponent({
   name: 'tabsData',
   components: {
     tableAccount,
-    tablePhone,
-    User,
-    Iphone
+    tablePhone
   },
 
   setup() {

@@ -27,19 +27,20 @@ export default defineComponent({
 
 <style scoped>
 .loginHome {
-  width: 340px;
+  width: 360px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   position: relative;
-  top: calc(50% - 60px);
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 10%;
 }
 .login {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
   background: url('@/assets/img/login-bg.svg');
   background-size: cover;
 }

@@ -16,7 +16,7 @@ const loginModule: Module<loginState, RootState> = {
     token: '',
     Id: 0,
     userInfo: null,
-    userMenus: null
+    userMenus: ''
   },
   mutations: {
     changeToken(state, token: string) {
@@ -56,6 +56,7 @@ const loginModule: Module<loginState, RootState> = {
       commit('changeUserInfo', userInfo)
       //请求用户菜单
       const userMenus = (await LoginMenus(id)).data
+      console.log(userMenus)
       storage.setItem('userMenus', userMenus)
       commit('changeUserMenus', userMenus)
     }

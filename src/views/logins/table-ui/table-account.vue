@@ -25,9 +25,11 @@ import { rules } from './config'
 
 import storage from '@/utils/utilsLocalstorage'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
+    const router = useRouter()
     const store = useStore()
     let userData = reactive({
       name: storage.getItem('userAccount').name ?? '',
@@ -45,6 +47,7 @@ export default defineComponent({
             storage.setItem('userAccount', userData)
           }
           console.log(store.dispatch('loginModule/loginRequest', userData))
+          router.push('/main')
         }
       })
     }

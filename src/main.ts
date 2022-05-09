@@ -6,10 +6,14 @@ import { store, RootstateStart } from './store'
 
 import 'element-plus/theme-chalk/index.css'
 import '@/assets/css/index.less'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
 app.use(router)
 app.use(store)
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 // const aoo = axios.create({ baseURL: 'http://152.136.185.210:7878/api/hy66' })
 // aoo

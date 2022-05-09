@@ -5,7 +5,7 @@ import { userType, loginRequest, loginResult } from './type'
 enum loginPath {
   loginPath = '/login',
   loginUserData = '/users/', // /users/1
-  loginMenus = '/menu/' // /menu/1
+  loginMenus = '/role/' // /role/1/menu/
 }
 
 //登录请求
@@ -26,7 +26,7 @@ export function LoginUserData(userId: number) {
 //用户菜单请求
 export function LoginMenus(userId: number) {
   return KRLRequest.request<loginRequest>({
-    url: loginPath.loginMenus + userId,
+    url: loginPath.loginMenus + userId + '/menu/',
     method: 'get'
   })
 }

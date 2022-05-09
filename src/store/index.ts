@@ -1,8 +1,8 @@
-import { createStore } from 'vuex'
+import { createStore, Store, useStore } from 'vuex'
 
 import loginModule from './login/index'
 
-import type { RootState } from './type'
+import type { RootState, RootStateLogin } from './type'
 
 const store = createStore<RootState>({
   state: () => {
@@ -20,4 +20,8 @@ function RootstateStart() {
   store.commit('loginModule/dataStart')
 }
 
-export { store, RootstateStart }
+function useStoreLogin(): Store<RootStateLogin> {
+  return useStore()
+}
+
+export { store, RootstateStart, useStoreLogin }
