@@ -1,15 +1,15 @@
 <template>
   <div class="navMebus">
     <el-menu
-      default-active="2"
+      :default-active="openItem + ''"
       class="el-menu-vertical-demo"
       background-color="#00152b"
       text-color="white"
       active-text-color="#015EBF"
       :collapse="isCollapse"
     >
-      <template v-for="(item, index) in menus" :key="item.id">
-        <el-sub-menu :index="indexType(index)">
+      <template v-for="item in menus" :key="item.id">
+        <el-sub-menu :index="item.id + ''">
           <template #title>
             <el-icon>
               <component
@@ -20,14 +20,14 @@
             <span>{{ item.name }}</span>
           </template>
           <template v-if="item.children">
-            <template v-for="(item2, index2) in item.children" :key="item2.id">
+            <template v-for="item2 in item.children" :key="item2.id">
               <component
                 v-if="item2.icon"
                 :is="iconFilter(item2.icon)"
               ></component>
               <el-menu-item
                 @click="routerJump(item2.url)"
-                :index="indexType(index) + '-' + indexType(index2)"
+                :index="item2.id + ''"
                 >{{ item2.name }}</el-menu-item
               >
             </template>
@@ -39,8 +39,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, defineComponent } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { MenusId } from '@/utils/mapMenusUrl'
 
 export default defineComponent({
   props: {
@@ -54,9 +55,8 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter()
-    const indexType = (index: number) => {
-      return index.toString()
-    }
+    const route = useRoute()
+
     const iconFilter = (target: string) => {
       return target.replace('el-icon-', '')
     }
@@ -64,11 +64,14 @@ export default defineComponent({
     const routerJump = (url: string) => {
       router.push(url)
     }
-
+    //展开的菜单item
+    const openItem = computed(() => {
+      return MenusId(route.path, props.menus)
+    })
     return {
-      indexType,
       iconFilter,
-      routerJump
+      routerJump,
+      openItem
     }
   }
 })

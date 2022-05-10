@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 import storage from '@/utils/utilsLocalstorage'
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',

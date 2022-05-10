@@ -9,19 +9,12 @@ import '@/assets/css/index.less'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
-app.use(router)
+
 app.use(store)
+RootstateStart()
+app.use(router)
+//注册element-plus的icon图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
-// const aoo = axios.create({ baseURL: 'http://152.136.185.210:7878/api/hy66' })
-// aoo
-//   .request({
-//     method: 'get',
-//     url: '/home/multidata'
-//   })
-//   .then((res) => {
-//     console.log(res)
-//   })
-RootstateStart()
 app.mount('#app')

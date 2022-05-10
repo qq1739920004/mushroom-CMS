@@ -10,6 +10,7 @@ import {
 } from '@/service/request/login/login'
 import storage from '@/utils/utilsLocalstorage'
 import { routerFilter } from '@/utils/mapMenusUrl'
+
 import router from '@/router/index'
 
 const loginModule: Module<loginState, RootState> = {
@@ -43,6 +44,10 @@ const loginModule: Module<loginState, RootState> = {
       }
       if (storage.getItem('userMenus')) {
         state.userMenus = storage.getItem('userMenus')
+        const routes = routerFilter(state.userMenus)
+        routes.forEach((item) => {
+          router.addRoute('main', item)
+        })
       }
     }
   },
@@ -61,12 +66,6 @@ const loginModule: Module<loginState, RootState> = {
       console.log(userMenus)
       storage.setItem('userMenus', userMenus)
       commit('changeUserMenus', userMenus)
-      const routes = routerFilter(userMenus)
-      routes.forEach((item) => {
-        console.log(item)
-        router.addRoute('main', item)
-      })
-      storage.setItem('routes', routes)
     }
   }
 }

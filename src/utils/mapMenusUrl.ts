@@ -28,4 +28,18 @@ const routerFilter = (Menus: any[]) => {
   return routers
 }
 
-export { routerFilter }
+//靠传过来的path返回此path对应的菜单id
+const MenusId = (path: string, Menus: any): any => {
+  for (const item of Menus) {
+    if (item.type === 1) {
+      const res = MenusId(path, item.children ?? [])
+      if (res) {
+        return res
+      }
+    } else if (item.type == 2 && item.url === path) {
+      return item.id
+    }
+  }
+}
+
+export { routerFilter, MenusId }
