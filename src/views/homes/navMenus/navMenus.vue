@@ -66,7 +66,7 @@ export default defineComponent({
     }
     //展开的菜单item
     const openItem = computed(() => {
-      return MenusId(route.path, props.menus)
+      return MenusId(route.path, props.menus).id
     })
     return {
       iconFilter,

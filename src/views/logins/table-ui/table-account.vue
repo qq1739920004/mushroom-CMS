@@ -31,9 +31,10 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const store = useStore()
+
     let userData = reactive({
-      name: storage.getItem('userAccount').name ?? '',
-      password: storage.getItem('userAccount').password ?? ''
+      name: storage.getItem('userAccount')?.name ?? '',
+      password: storage.getItem('userAccount')?.password ?? ''
     })
 
     const formRef = ref<InstanceType<typeof ElForm>>()
@@ -46,7 +47,6 @@ export default defineComponent({
           if (checked.value) {
             storage.setItem('userAccount', userData)
           }
-          console.log(store.dispatch('loginModule/loginRequest', userData))
           router.push('/main')
         }
       })

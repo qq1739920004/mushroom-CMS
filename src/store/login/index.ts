@@ -15,11 +15,13 @@ import router from '@/router/index'
 
 const loginModule: Module<loginState, RootState> = {
   namespaced: true,
-  state: {
-    token: '',
-    Id: 0,
-    userInfo: null,
-    userMenus: ''
+  state() {
+    return {
+      token: '',
+      Id: 0,
+      userInfo: null,
+      userMenus: ''
+    }
   },
   mutations: {
     changeToken(state, token: string) {

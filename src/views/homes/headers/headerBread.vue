@@ -7,16 +7,20 @@
       alt=""
     />
 
-    <lbread class="bread"></lbread>
+    <lbread class="bread" :breadItem="breadItem"></lbread>
     <user-ava class="avatar"></user-ava>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 import userAva from './userAvatar/userAva.vue'
-import lbread from './Lbread/Lbread.vue'
+import lbread from './Lbread'
+
+import storage from '@/utils/utilsLocalstorage'
+import { getBread } from '@/utils/mapMenusUrl'
 
 export default defineComponent({
   emits: ['changeMenus'],
@@ -26,14 +30,21 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     let isCollapse = ref(false)
+    let breadItem = computed(() => {
+      const Menus = storage.getItem('userMenus') //获取用户菜单
+      const path = useRoute().path //获取当前路由路径
+      return getBread(path, Menus)
+    })
 
     const changeMenus = () => {
       isCollapse.value = !isCollapse.value
       emit('changeMenus', isCollapse.value)
     }
+
     return {
       isCollapse,
-      changeMenus
+      changeMenus,
+      breadItem
     }
   }
 })

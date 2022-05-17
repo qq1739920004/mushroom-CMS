@@ -8,11 +8,16 @@ import 'element-plus/theme-chalk/index.css'
 import '@/assets/css/index.less'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
+import { configStart } from '@/global/index'
+
 const app = createApp(App)
 
 app.use(store)
 RootstateStart()
+
 app.use(router)
+configStart(app)
+
 //注册element-plus的icon图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)

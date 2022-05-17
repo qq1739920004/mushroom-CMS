@@ -3,6 +3,8 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import storage from '@/utils/utilsLocalstorage'
 
+import { first } from '@/utils/mapMenusUrl'
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -35,6 +37,10 @@ router.beforeEach((to) => {
     if (!token) {
       return '/login'
     }
+  }
+  //用户再main的url默认跳到的页面
+  if (to.path == '/main') {
+    return first
   }
 })
 

@@ -1,7 +1,7 @@
-const user = () => import('@/views/main/product/goods/user.vue')
+const goods = () => import('@/views/main/product/goods/goods.vue')
 export default {
   path: '/main/product/goods',
   name: 'productGoods',
-  component: user,
+  component: goods,
   children: []
 }

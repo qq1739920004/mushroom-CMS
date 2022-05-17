@@ -43,7 +43,7 @@ class KRLRequest {
     )
   }
   //我们向外提供的请求接口
-  request<T>(config: KRLconfig<T>): Promise<T> {
+  request<T = any>(config: KRLconfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       //加载的组件
       let Loading: any
@@ -74,9 +74,9 @@ class KRLRequest {
           }
 
           if (config.isloding === true) {
-            setTimeout(() => {
-              Loading.close()
-            }, 1000)
+            // setTimeout(() => {
+            //   Loading.close()
+            // }, 1000)
           }
         })
         .catch((err) => {

@@ -1,44 +1,36 @@
 <template>
-  <div class="user">
-    <from-l
-      v-bind="LFrom"
-      v-model="fromData"
-      @serachNetwork="serachNetwork"
-    ></from-l>
-    <listTable
-      ref="fromLRef"
-      v-bind="{ LTabelConfig, netWorkConfig }"
-    ></listTable>
+  <div class="goods">
+    <listTable ref="fromLRef" v-bind="{ LTabelConfig, netWorkConfig }">
+      <template #image="row">
+        <el-image
+          style="width: 60px; height: 75px"
+          :src="row.row.imgUrl"
+          fit="fill"
+        />
+      </template>
+    </listTable>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
-import fromL from '@/components-ui/mainInput' //输入框组件
 import listTable from '@/components-ui/listTable/listTable.vue' //表格组件
-
-import { LFrom, fromDatas } from './inputConfig' //输入框配置文件
 
 import { LTabelConfig, netWorkConfig } from './tabelConfig' //表格配置文件
 
 export default defineComponent({
   components: {
-    fromL,
     listTable
   },
-  name: 'user',
+  name: 'goods',
   setup() {
-    //取到配置的表单里的input需要绑定的值名称做一份浅拷贝传给组件（你为了方便数据修改）
-    const fromData = ref({ ...fromDatas })
     //搜索按钮点击后的事件
     const fromLRef = ref<InstanceType<typeof listTable>>()
     function serachNetwork(newFromData: any) {
       fromLRef.value?.netWorkTable(newFromData)
     }
     return {
-      LFrom,
-      fromData,
       LTabelConfig,
       netWorkConfig,
       serachNetwork,
@@ -47,5 +39,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped></style>

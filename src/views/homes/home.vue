@@ -13,7 +13,9 @@
           <headerBread @changeMenus="changeMenus"></headerBread>
         </el-header>
         <el-main class="main">
-          <router-view></router-view>
+          <el-config-provider :locale="zhCn">
+            <router-view></router-view>
+          </el-config-provider>
         </el-main>
       </el-container>
     </el-container>
@@ -21,8 +23,9 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref, defineComponent, computed } from 'vue'
-import type { Ref } from 'vue'
+import { ref, defineComponent, computed } from 'vue'
+import zhCn from 'element-plus/es/locale/lang/zh-cn' //国际化
+
 import { useStoreLogin } from '@/store/index'
 import navMenus from './navMenus/navMenus.vue'
 import headerBread from './headers/headerBread.vue'
@@ -39,7 +42,8 @@ export default defineComponent({
     return {
       menus,
       isCollapse,
-      changeMenus
+      changeMenus,
+      zhCn
     }
   },
   components: {
@@ -77,6 +81,6 @@ export default defineComponent({
   align-items: center;
 }
 .main {
-  background-color: antiquewhite;
+  background-color: #f5f5f5;
 }
 </style>

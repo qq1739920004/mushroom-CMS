@@ -15,4 +15,10 @@ interface KRLconfig<T = AxiosResponse> extends AxiosRequestConfig {
   isloding?: boolean //是否显示加载
 }
 
-export { KRLInterceptor, KRLconfig }
+//请求数据里面模块化请求的对象类型
+interface requestInfo {
+  url: string
+  method: string
+}
+
+export { KRLInterceptor, KRLconfig, requestInfo }

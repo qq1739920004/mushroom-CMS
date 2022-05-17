@@ -1,7 +1,8 @@
 import { createStore, Store, useStore } from 'vuex'
-
+//模块
 import loginModule from './login/index'
-
+import { listModule } from './main/system/index'
+//模块里的类型
 import type { RootState, RootStateLogin } from './type'
 
 const store = createStore<RootState>({
@@ -13,7 +14,7 @@ const store = createStore<RootState>({
   },
   mutations: {},
   actions: {},
-  modules: { loginModule }
+  modules: { loginModule, listModule }
 })
 
 function RootstateStart() {
