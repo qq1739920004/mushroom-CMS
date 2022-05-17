@@ -20,7 +20,7 @@ const store = createStore<RootState>({
 function RootstateStart() {
   store.commit('loginModule/dataStart')
 }
-
+//可以让我们在除了setup里面的地方使用useStore()
 function useStoreLogin(): Store<RootStateLogin> {
   return useStore()
 }

@@ -15,7 +15,9 @@ const listModule: Module<listState, RootState> = {
       roleList: [],
       roleCount: 0,
       goodsList: [],
-      goodsCount: 0
+      goodsCount: 0,
+      menuList: [],
+      menuCount: 0
     }
   },
   mutations: {
@@ -36,6 +38,12 @@ const listModule: Module<listState, RootState> = {
     },
     goodsCountChange(state, value) {
       state.goodsCount = value
+    },
+    menuListChange(state, value) {
+      state.menuList = value
+    },
+    menuCountChange(state, value) {
+      state.menuCount = value
     }
   },
   getters: {

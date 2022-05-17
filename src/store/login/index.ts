@@ -13,6 +13,8 @@ import { routerFilter } from '@/utils/mapMenusUrl'
 
 import router from '@/router/index'
 
+import { roleDicide } from '@/utils/roleDecide' //查找用户的utils
+
 const loginModule: Module<loginState, RootState> = {
   namespaced: true,
   state() {
@@ -20,7 +22,8 @@ const loginModule: Module<loginState, RootState> = {
       token: '',
       Id: 0,
       userInfo: null,
-      userMenus: ''
+      userMenus: '',
+      userRoleAll: ''
     }
   },
   mutations: {
@@ -37,6 +40,9 @@ const loginModule: Module<loginState, RootState> = {
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
     },
+    changeUserUserRoleAll(state, userRoleAll: any) {
+      state.userRoleAll = userRoleAll
+    },
     dataStart(state) {
       if (storage.getItem('token')) {
         state.token = storage.getItem('token')
@@ -50,6 +56,9 @@ const loginModule: Module<loginState, RootState> = {
         routes.forEach((item) => {
           router.addRoute('main', item)
         })
+      }
+      if (storage.getItem('userRoleAll')) {
+        state.userRoleAll = storage.getItem('userRoleAll')
       }
     }
   },
@@ -65,9 +74,12 @@ const loginModule: Module<loginState, RootState> = {
       commit('changeUserInfo', userInfo)
       //请求用户菜单
       const userMenus = (await LoginMenus(id)).data
-      console.log(userMenus)
       storage.setItem('userMenus', userMenus)
       commit('changeUserMenus', userMenus)
+      //对用户权限进行查找
+      const res = roleDicide(userMenus)
+      storage.setItem('userRoleAll', res)
+      commit('changeUserUserRoleAll', res)
     }
   }
 }

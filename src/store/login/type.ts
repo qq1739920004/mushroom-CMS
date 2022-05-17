@@ -3,4 +3,5 @@ export interface loginState {
   Id: number
   userInfo: any
   userMenus: any
+  userRoleAll: any
 }

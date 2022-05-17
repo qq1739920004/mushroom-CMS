@@ -3,25 +3,24 @@ import type { LtabelConfige, nwConfig } from '@/components-ui/LTable/types/type'
 //表格配置
 
 const LTabelConfig: LtabelConfige = {
-  title: '商品列表',
+  title: '菜单列表',
   propList: [
-    { prop: 'name', label: '商品名字', minWidth: '180' },
-    { prop: 'oldPrice', label: '原价格', minWidth: '80', slotName: 'oldPrice' },
-    { prop: 'newPrice', label: '现价格', minWidth: '80' },
-    { prop: 'imgUrl', label: '商品图片', minWidth: '100', slotName: 'image' },
-    { prop: 'status', label: '状态', minWidth: '100', slotName: 'status' },
-
+    { prop: 'name', label: '菜单名称', minWidth: '100' },
+    { prop: 'type', label: '类型', minWidth: '60' },
+    { prop: 'url', label: '菜单url', minWidth: '100' },
+    { prop: 'icon', label: '菜单icon', minWidth: '100' },
+    { prop: 'permission', label: '按钮权限', minWidth: '100' },
     {
       prop: 'createAt',
       label: '创建时间',
-      minWidth: '200',
+      minWidth: '250',
       slotName: 'createAt',
       sortable: true
     },
     {
       prop: 'updateAt',
       label: '更新时间',
-      minWidth: '200',
+      minWidth: '250',
       slotName: 'updateAt',
       sortable: true
     },
@@ -29,10 +28,15 @@ const LTabelConfig: LtabelConfige = {
   ],
   showIndexColumn: false,
   showSelectColumn: false,
-  showOverflowTooltip: true
+  childrenProps: {
+    rowKey: 'id',
+    treeProp: {
+      children: 'children'
+    }
+  }
 }
 const netWorkConfig: nwConfig = {
-  pageName: 'goods',
+  pageName: 'menu',
   queryInfo: {
     offset: 0,
     size: 10

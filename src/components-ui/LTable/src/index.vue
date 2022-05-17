@@ -8,7 +8,12 @@
         </div>
       </slot>
     </div>
-    <el-table :data="propsList" style="width: 100%" :border="true">
+    <el-table
+      :data="propsList"
+      style="width: 100%"
+      :border="true"
+      v-bind="childrenProps"
+    >
       <el-table-column
         align="center"
         v-if="showSelectColumn"
@@ -62,6 +67,7 @@
 import { defineComponent, ref, reactive, watch } from 'vue'
 import type { PropType } from 'vue'
 import { propsListType } from '@/components-ui/LTable/types/type'
+import { childrenPropsType } from '@/components-ui/LTable/types/type'
 
 export default defineComponent({
   props: {
@@ -92,6 +98,9 @@ export default defineComponent({
     usersCount: {
       type: Number,
       default: 999
+    },
+    childrenProps: {
+      type: Object as PropType<childrenPropsType>
     }
   },
   emits: ['queryInfoChange'],

@@ -47,6 +47,8 @@ export default defineComponent({
           if (checked.value) {
             storage.setItem('userAccount', userData)
           }
+          // 2.开始进行登录验证
+          store.dispatch('loginModule/loginRequest', { ...userData })
           router.push('/main')
         }
       })

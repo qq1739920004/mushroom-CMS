@@ -5,7 +5,8 @@ import { systemRequestType, systemRequestObjType } from './type'
 const loginPath: systemRequestType = {
   users: { url: '/users/list', method: 'post' },
   role: { url: '/role/list', method: 'post' },
-  goods: { url: '/goods/list', method: 'post' }
+  goods: { url: '/goods/list', method: 'post' },
+  menu: { url: '/menu/list', method: 'post' }
 }
 
 export function listServer(pageName: systemRequestObjType, queryInfo: any) {

@@ -9,7 +9,9 @@
       <!-- 列表头插槽 -->
       <template #headerHandler>
         <div class="handler">
-          <el-button type="primary" size="default">新建用户</el-button>
+          <el-button v-if="isCreate" type="primary" size="default"
+            >新建用户</el-button
+          >
         </div>
       </template>
       <!-- 状态插槽 -->
@@ -35,8 +37,12 @@
       </template>
       <!-- 操作插槽 -->
       <template #handler>
-        <el-button type="text" size="default" icon="edit"> 编辑 </el-button>
-        <el-button type="text" size="default" icon="delete"> 删除 </el-button>
+        <el-button v-if="isUpdate" type="text" size="default" icon="edit">
+          编辑
+        </el-button>
+        <el-button v-if="isDelete" type="text" size="default" icon="delete">
+          删除
+        </el-button>
       </template>
       <!-- 上面都为每个表格必有得插槽 -->
       <!-- 下面动态从配置生成页面不同表格独有得插槽 -->
@@ -59,6 +65,8 @@ import { computed, defineComponent } from 'vue'
 import LTable from '@/components-ui/LTable/index'
 import { useStore } from 'vuex'
 
+import { isRole } from '@/utils/isRole'
+
 import { purify } from '@/utils/filterDate' //把utc格式的时间数据变成正常格式
 
 export default defineComponent({
@@ -76,11 +84,18 @@ export default defineComponent({
     }
   },
   setup(props) {
+    //0.获取操作的权限
+    const isCreate = isRole(props.netWorkConfig.pageName, 'create')
+    const isUpdate = isRole(props.netWorkConfig.pageName, 'update')
+    const isDelete = isRole(props.netWorkConfig.pageName, 'delete')
+    const isQuery = isRole(props.netWorkConfig.pageName, 'query')
+    // console.log(isCreate, isUpdate, isDelete, isQuery)
     //1.请求用户表格数据
     const store = useStore()
     let propsList: any
     let copyValue: any //用于存储input搜索的内容，改变分页器的时候需要用到
     function netWorkTable(value?: any, queryInfo?: any) {
+      if (!isQuery) return
       copyValue = value
       //把参数筛取传过去，因为搜索的时候有一些参数不能传
       const netWorkConfig = { pageName: '', queryInfo: '' }
@@ -138,7 +153,6 @@ export default defineComponent({
         return false
       }
     })
-    console.log(otherSlot)
 
     return {
       propsList,
@@ -146,7 +160,10 @@ export default defineComponent({
       netWorkTable,
       usersCount,
       paginationChangeNetwork,
-      otherSlot
+      otherSlot,
+      isCreate,
+      isUpdate,
+      isDelete
     }
   }
 })

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 import router from '@/router/index'
-import { store, RootstateStart } from './store'
+import { store, RootstateStart } from '@/store'
 
 import 'element-plus/theme-chalk/index.css'
 import '@/assets/css/index.less'
