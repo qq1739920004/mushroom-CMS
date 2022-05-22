@@ -9,7 +9,11 @@
       <!-- 列表头插槽 -->
       <template #headerHandler>
         <div class="handler">
-          <el-button v-if="isCreate" type="primary" size="default"
+          <el-button
+            v-if="isCreate"
+            type="primary"
+            size="default"
+            @click="centerDialogVisibleChange('create', 1)"
             >新建用户</el-button
           >
         </div>
@@ -36,14 +40,27 @@
         </strong>
       </template>
       <!-- 操作插槽 -->
-      <template #handler>
-        <el-button v-if="isUpdate" type="text" size="default" icon="edit">
+      <template #handler="row">
+        <el-button
+          v-if="isUpdate"
+          type="text"
+          size="default"
+          icon="edit"
+          @click="centerDialogVisibleChange('update', row)"
+        >
           编辑
         </el-button>
-        <el-button v-if="isDelete" type="text" size="default" icon="delete">
+        <el-button
+          v-if="isDelete"
+          type="text"
+          size="default"
+          icon="delete"
+          @click="centerDialogVisibleChange('delete', row)"
+        >
           删除
         </el-button>
       </template>
+
       <!-- 上面都为每个表格必有得插槽 -->
       <!-- 下面动态从配置生成页面不同表格独有得插槽 -->
       <template
@@ -58,10 +75,19 @@
       </template>
     </l-table>
   </div>
+  <!-- 点击删除跳出是否确定 -->
+  <template v-if="dialogConfig">
+    <l-dialog
+      v-model="centerDialogVisible"
+      :dialogType="dialogType"
+      v-bind="{ dialogConfig, dialogLFrom, dialogFromDatas }"
+      @deleteRequest="centerDialogVisibleChangeMirror"
+    ></l-dialog>
+  </template>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref, Ref } from 'vue'
 import LTable from '@/components-ui/LTable/index'
 import { useStore } from 'vuex'
 
@@ -69,18 +95,36 @@ import { isRole } from '@/utils/isRole'
 
 import { purify } from '@/utils/filterDate' //把utc格式的时间数据变成正常格式
 
+import LDialog from '@/components-ui/Ldialog/index' //点击删除按钮会跳出来问你是否确定删除的对话框
+
+import type { dialogTypes } from './types/type'
+
 export default defineComponent({
   components: {
-    LTable
+    LTable,
+    LDialog
   },
   props: {
+    // 网络请求数据
     netWorkConfig: {
       type: Object,
       required: true
     },
+    //表格配置数据
     LTabelConfig: {
       type: Object,
       required: true
+    },
+    //弹出的对话框配置
+    dialogConfig: {
+      type: Object
+    },
+    //弹出的对话框的表单配置
+    dialogLFrom: {
+      type: Object
+    },
+    dialogFromDatas: {
+      type: Object
     }
   },
   setup(props) {
@@ -89,20 +133,30 @@ export default defineComponent({
     const isUpdate = isRole(props.netWorkConfig.pageName, 'update')
     const isDelete = isRole(props.netWorkConfig.pageName, 'delete')
     const isQuery = isRole(props.netWorkConfig.pageName, 'query')
-    // console.log(isCreate, isUpdate, isDelete, isQuery)
+
     //1.请求用户表格数据
     const store = useStore()
     let propsList: any
     let copyValue: any //用于存储input搜索的内容，改变分页器的时候需要用到
+    let tabelConfig: any ////用于存储发送表格请求的参数内容，删除数据后刷新页面的时候需要用到
     function netWorkTable(value?: any, queryInfo?: any) {
       if (!isQuery) return
-      copyValue = value
+      // 有value传过来的话保存好，方便更新表格的时候还在当前搜索的表格
+      if (value) {
+        copyValue = value
+      }
       //把参数筛取传过去，因为搜索的时候有一些参数不能传
       const netWorkConfig = { pageName: '', queryInfo: '' }
       let purifyValue
       if (copyValue) {
-        const { id, name, password } = copyValue
-        purifyValue = { id, name, password }
+        const { id, name, password, createAt } = copyValue
+        if (createAt) {
+          createAt['0'] = purify(createAt['0'])
+          createAt['1'] = purify(createAt['1'])
+          console.log(value?.createAt)
+        }
+
+        purifyValue = { id, name, password, createAt }
       }
       netWorkConfig.pageName = props.netWorkConfig.pageName
       if (!queryInfo) {
@@ -110,12 +164,17 @@ export default defineComponent({
           ...props.netWorkConfig.queryInfo,
           ...purifyValue
         }
+        // 保存好当前页数的参数，方便更新表格的时候还在当前页数的表格
+        tabelConfig = props.netWorkConfig.queryInfo
       } else {
         netWorkConfig.queryInfo = {
           ...queryInfo,
           ...purifyValue
         }
+        // 保存好当前页数的参数，方便更新表格的时候还在当前页数的表格
+        tabelConfig = queryInfo
       }
+
       // 2.获取vuex里面的数据
       store.dispatch('listModule/ListRequest', netWorkConfig)
       propsList = computed(() => {
@@ -124,8 +183,8 @@ export default defineComponent({
         )
       })
     }
-    netWorkTable()
 
+    netWorkTable()
     //3.改变分页器的时候重新发生网络请求
     function paginationChangeNetwork(value: any) {
       netWorkTable(copyValue, value)
@@ -153,6 +212,61 @@ export default defineComponent({
         return false
       }
     })
+    // 5.对话模块
+    //对话框是否跳出
+    const centerDialogVisible = ref(false)
+    const dialogType = ref<dialogTypes>()
+    //调用删除/编辑/新建操作
+    // 保存row
+    let rowData: any
+    function centerDialogVisibleChangeMirror(value: any) {
+      centerDialogVisibleChange(value)
+    }
+    async function centerDialogVisibleChange(queryInfo: any, row?: any) {
+      if (row) {
+        // 保存row
+        centerDialogVisible.value = true
+        if (queryInfo.demand) {
+          dialogType.value = queryInfo.demand
+        } else {
+          dialogType.value = queryInfo
+        }
+        rowData = row
+      } else {
+        if (queryInfo?.demand == 'delete') {
+          //整理好delete需要的参数
+          dialogType.value = 'delete'
+          const queryInfo = {
+            id: rowData.row.id,
+            pageName: props.netWorkConfig.pageName
+          }
+          await store.dispatch('listModule/deleteRequest', queryInfo)
+        } else if (queryInfo?.demand == 'create') {
+          //新建的操作
+          dialogType.value = 'create'
+          queryInfo.name = props.netWorkConfig.pageName
+          await store.dispatch('listModule/createRequest', queryInfo)
+        } else if (queryInfo?.demand == 'update') {
+          dialogType.value = 'update'
+
+          // 编辑的操作
+          //把新建的那几个item去掉
+          let infoAll: any = {}
+          props.dialogLFrom?.fromItem.forEach((item: any) => {
+            if (item.updateShow != true) {
+              infoAll[`${item.field}`] = queryInfo.info[`${item.field}`]
+            }
+          })
+          queryInfo.info = infoAll
+
+          queryInfo.name = props.netWorkConfig.pageName
+          queryInfo.id = rowData.row.id
+          //请求vuex
+          await store.dispatch('listModule/updateRequest', queryInfo)
+        }
+      }
+      netWorkTable(copyValue, tabelConfig)
+    }
 
     return {
       propsList,
@@ -163,7 +277,11 @@ export default defineComponent({
       otherSlot,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      centerDialogVisible,
+      centerDialogVisibleChange,
+      centerDialogVisibleChangeMirror,
+      dialogType
     }
   }
 })

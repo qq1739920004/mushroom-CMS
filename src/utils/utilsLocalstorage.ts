@@ -9,7 +9,7 @@ class utlisLocalstorage {
   }
   removeItem(key: string) {
     const _idata: any = window.localStorage.removeItem(key)
-    return JSON.parse(_idata)
+    return
   }
 }
 

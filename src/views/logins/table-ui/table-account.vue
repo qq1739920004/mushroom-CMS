@@ -39,16 +39,16 @@ export default defineComponent({
 
     const formRef = ref<InstanceType<typeof ElForm>>()
 
-    const fromData = (checked: Ref<boolean>) => {
-      formRef.value?.validate((valid) => {
+    async function fromData(checked: boolean) {
+      formRef.value?.validate(async (valid) => {
         //保持记住密码选项的选择
-        storage.setItem('checked', checked.value)
+        storage.setItem('checked', checked)
         if (valid) {
-          if (checked.value) {
+          if (checked) {
             storage.setItem('userAccount', userData)
           }
           // 2.开始进行登录验证
-          store.dispatch('loginModule/loginRequest', { ...userData })
+          await store.dispatch('loginModule/loginRequest', { ...userData })
           router.push('/main')
         }
       })

@@ -5,6 +5,12 @@ export interface systemRequestType {
   role: requestInfo
   goods: requestInfo
   menu: requestInfo
+  department: requestInfo
 }
 
-export type systemRequestObjType = 'users' | 'role'
+export type systemRequestObjType =
+  | 'users'
+  | 'role'
+  | 'department'
+  | 'goods'
+  | 'menu'

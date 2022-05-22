@@ -19,15 +19,15 @@
               <template v-if="item.type == 'select'">
                 <el-select
                   v-model="fromData[`${item.field}`]"
-                  placeholder="Select"
+                  placeholder="请选择"
                   style="width: 100%"
                 >
                   <el-option
                     v-for="item2 in item.options"
                     :key="item2.value"
-                    :label="item2.title"
                     :value="item2.value"
-                  />
+                    :label="item2.title"
+                  ></el-option>
                 </el-select>
               </template>
               <template v-else-if="item.type == 'datepicker'">
@@ -100,9 +100,15 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     let fromData = ref({ ...props.modelValue })
-    watch(fromData, (newValue) => emit('update:modelValue', newValue), {
-      deep: true
-    })
+    watch(
+      fromData,
+      (newValue) => {
+        return emit('update:modelValue', newValue)
+      },
+      {
+        deep: true
+      }
+    )
     //获取重置按钮的dom元素
     const resetInput = ref()
     watchEffect(

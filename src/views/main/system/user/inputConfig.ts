@@ -41,7 +41,7 @@ const LFrom: LFromConfig = {
     },
     {
       type: 'datepicker',
-      field: 'createTime',
+      field: 'createAt',
       id: 5,
       label: '创建时间',
       otherOptions: {

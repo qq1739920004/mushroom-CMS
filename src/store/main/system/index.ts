@@ -4,7 +4,12 @@ import type { listState } from './type'
 
 import { systemRequestObjType } from '@/service/request/main/system/type'
 
-import { listServer } from '@/service/request/main/system/index'
+import {
+  listServer,
+  deleteServer,
+  createServer,
+  updateServer
+} from '@/service/request/main/system/index'
 
 const listModule: Module<listState, RootState> = {
   namespaced: true,
@@ -17,7 +22,9 @@ const listModule: Module<listState, RootState> = {
       goodsList: [],
       goodsCount: 0,
       menuList: [],
-      menuCount: 0
+      menuCount: 0,
+      departmentList: [],
+      departmentCount: 0
     }
   },
   mutations: {
@@ -44,6 +51,12 @@ const listModule: Module<listState, RootState> = {
     },
     menuCountChange(state, value) {
       state.menuCount = value
+    },
+    departmentListChange(state, value) {
+      state.departmentCount = value
+    },
+    departmentCountChange(state, value) {
+      state.departmentList = value
     }
   },
   getters: {
@@ -59,6 +72,7 @@ const listModule: Module<listState, RootState> = {
     }
   },
   actions: {
+    //1.请求列表请求
     async ListRequest({ commit }, payload: any) {
       // console.log(payload)
       //对页面发送请求
@@ -68,7 +82,22 @@ const listModule: Module<listState, RootState> = {
       commit(`${payload.pageName}CountChange`, ListResult.data.totalCount)
       // 返回数据
       return ListResult.data.list
+    },
+    //2.删除请求
+    async deleteRequest({ commit }, queryInfo: string) {
+      await deleteServer(queryInfo)
+      return
+    },
+    //3.新建请求
+    async createRequest({ commit }, queryInfo: any) {
+      await createServer(queryInfo)
+      return
+    },
+    //4.编辑请求
+    async updateRequest({ commit }, queryInfo: any) {
+      await updateServer(queryInfo)
+      return
     }
   }
 }
-export { listModule }
+export default listModule

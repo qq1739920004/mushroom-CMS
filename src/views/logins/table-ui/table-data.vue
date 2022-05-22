@@ -45,7 +45,7 @@ export default defineComponent({
     let checked = ref(storage.getItem('checked') ?? false)
     const account = ref<InstanceType<typeof tableAccount>>()
     const loginNetwork = () => {
-      account.value?.fromData(checked)
+      account.value?.fromData(checked.value)
     }
     return {
       loginNetwork,

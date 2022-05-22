@@ -39,7 +39,7 @@ const netWorkConfig: nwConfig = {
   pageName: 'menu',
   queryInfo: {
     offset: 0,
-    size: 10
+    size: 5
   }
 }
 export { LTabelConfig, netWorkConfig }

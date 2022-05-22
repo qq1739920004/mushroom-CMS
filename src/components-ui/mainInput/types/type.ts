@@ -1,5 +1,16 @@
 type LFromType = 'input' | 'passWord' | 'select' | 'datepicker'
-type LField = 'name' | 'password' | 'sport' | 'createTime' | 'id' | 'intro'
+type LField =
+  | 'name'
+  | 'password'
+  | 'sport'
+  | 'createTime'
+  | 'id'
+  | 'intro'
+  | 'realname'
+  | 'cellphone'
+  | 'departmentId'
+  | 'roleId'
+  | 'createAt'
 
 export interface LFromItem {
   type: LFromType //类型
@@ -10,6 +21,7 @@ export interface LFromItem {
   options?: any[] //select的选项
   placeholder?: any //提示词
   otherOptions?: any //其他配置
+  updateShow?: boolean //是否在编辑此行的时候显示
 }
 export interface Lbut {
   but: string
@@ -24,6 +36,6 @@ export interface LFromConfig {
   colLayout: any
   itemLayout: any
   h?: string
-  but: Lbut[]
+  but?: Lbut[]
   butLayout?: any
 }

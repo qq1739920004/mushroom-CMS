@@ -7,4 +7,6 @@ export interface listState {
   goodsCount: number
   menuList: any[]
   menuCount: number
+  departmentList: any[]
+  departmentCount: number
 }

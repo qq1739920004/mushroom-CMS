@@ -1,24 +1,50 @@
 import { createStore, Store, useStore } from 'vuex'
 //模块
 import loginModule from './login/index'
-import { listModule } from './main/system/index'
+import listModule from './main/system/index'
 //模块里的类型
 import type { RootState, RootStateLogin } from './type'
+
+import { listServer } from '@/service/request/main/system/index'
 
 const store = createStore<RootState>({
   state: () => {
     return {
       name: '靓仔',
-      age: 19
+      age: 19,
+      departmentList: [],
+      roleList: []
     }
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    departmentCountChange(state, value) {
+      state.departmentList = value
+    },
+    roleListChange(state, value) {
+      state.roleList = value
+    }
+  },
+  actions: {
+    //.请求所有部门列表以及角色列表
+    async roleAndDepartment({ commit, dispatch }) {
+      const roleList = await listServer('role', {
+        offset: 0,
+        size: 100
+      })
+      const departmentList = await listServer('department', {
+        offset: 0,
+        size: 100
+      })
+      commit('roleListChange', roleList.data.list)
+      commit('departmentCountChange', departmentList.data.list)
+    }
+  },
   modules: { loginModule, listModule }
 })
 
-function RootstateStart() {
-  store.commit('loginModule/dataStart')
+async function RootstateStart() {
+  await store.commit('loginModule/dataStart')
+  store.dispatch('roleAndDepartment')
 }
 //可以让我们在除了setup里面的地方使用useStore()
 function useStoreLogin(): Store<RootStateLogin> {
