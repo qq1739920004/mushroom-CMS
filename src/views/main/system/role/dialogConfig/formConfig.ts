@@ -10,52 +10,17 @@ const dialogLFrom: LFromConfig = {
       type: 'input',
       field: 'name',
       id: 1,
-      label: '用户名',
+      label: '角色名',
       rules: [],
-      placeholder: '请输入用户名'
+      placeholder: '请输入角色名'
     },
     {
       type: 'input',
       id: 2,
-      field: 'realname',
-      label: '真实姓名',
+      field: 'intro',
+      label: '角色介绍',
       rules: [],
-      placeholder: '请输入真实姓名'
-    },
-    {
-      type: 'passWord',
-      field: 'password',
-      id: 3,
-      label: '用户密码',
-      rules: [],
-      placeholder: '请输入用户密码',
-      updateShow: true
-    },
-    {
-      type: 'input',
-      id: 4,
-      field: 'cellphone',
-      label: '电话号码',
-      rules: [],
-      placeholder: '请输入电话号码'
-    },
-    {
-      id: 5,
-      field: 'departmentId',
-      type: 'select',
-      label: '选择部门',
-      placeholder: '请选择部门',
-      options: [],
-      updateShow: true
-    },
-    {
-      id: 6,
-      field: 'roleId',
-      type: 'select',
-      label: '选择角色',
-      placeholder: '请选择角色',
-      options: [],
-      updateShow: true
+      placeholder: '请输入角色介绍'
     }
   ],
   labelWidth: '100px',

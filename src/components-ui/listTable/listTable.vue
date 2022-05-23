@@ -82,7 +82,17 @@
       :dialogType="dialogType"
       v-bind="{ dialogConfig, dialogLFrom, dialogFromDatas }"
       @deleteRequest="centerDialogVisibleChangeMirror"
-    ></l-dialog>
+    >
+      <template v-if="dialogConfig.selectTree && dialogType == 'create'" #tree>
+        <el-tree
+          :data="munusList"
+          show-checkbox
+          node-key="id"
+          :props="{ children: 'children', label: 'name' }"
+          @check="checkTree"
+        />
+      </template>
+    </l-dialog>
   </template>
 </template>
 
@@ -98,6 +108,8 @@ import { purify } from '@/utils/filterDate' //把utc格式的时间数据变成�
 import LDialog from '@/components-ui/Ldialog/index' //点击删除按钮会跳出来问你是否确定删除的对话框
 
 import type { dialogTypes } from './types/type'
+
+import { roleMenusSelect } from '@/utils/mapMenusUrl' //获取此角色所拥有的叶子权限（用于回选）
 
 export default defineComponent({
   components: {
@@ -125,6 +137,10 @@ export default defineComponent({
     },
     dialogFromDatas: {
       type: Object
+    },
+    //菜单列表（用于角色选择）
+    munusList: {
+      type: Array
     }
   },
   setup(props) {
@@ -135,6 +151,7 @@ export default defineComponent({
     const isQuery = isRole(props.netWorkConfig.pageName, 'query')
 
     //1.请求用户表格数据
+    console.log(props.dialogConfig?.selectTree)
     const store = useStore()
     let propsList: any
     let copyValue: any //用于存储input搜索的内容，改变分页器的时候需要用到
@@ -245,10 +262,11 @@ export default defineComponent({
           //新建的操作
           dialogType.value = 'create'
           queryInfo.name = props.netWorkConfig.pageName
+          queryInfo.info = { ...queryInfo.info, ...otherMenus.value }
           await store.dispatch('listModule/createRequest', queryInfo)
         } else if (queryInfo?.demand == 'update') {
           dialogType.value = 'update'
-
+          console.log(rowData.row)
           // 编辑的操作
           //把新建的那几个item去掉
           let infoAll: any = {}
@@ -262,10 +280,20 @@ export default defineComponent({
           queryInfo.name = props.netWorkConfig.pageName
           queryInfo.id = rowData.row.id
           //请求vuex
+          queryInfo.info = { ...queryInfo.info, ...otherMenus.value }
+          const roleMenus = roleMenusSelect(rowData.row.menuList)
           await store.dispatch('listModule/updateRequest', queryInfo)
         }
       }
       netWorkTable(copyValue, tabelConfig)
+    }
+    //6.角色模块的选择的权限
+    let otherMenus = ref()
+    function checkTree(data1: any, data2: any) {
+      const { checkedKeys, halfCheckedKeys } = data2
+      const menuList = [...checkedKeys, ...halfCheckedKeys]
+      otherMenus.value = { menuList }
+      console.log(otherMenus.value)
     }
 
     return {
@@ -281,7 +309,8 @@ export default defineComponent({
       centerDialogVisible,
       centerDialogVisibleChange,
       centerDialogVisibleChangeMirror,
-      dialogType
+      dialogType,
+      checkTree
     }
   }
 })

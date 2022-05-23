@@ -1,5 +1,6 @@
 const dialogConfig = {
   titleText: '危险操作',
-  deleteContent: '你确定删除此条数据吗'
+  deleteContent: '你确定删除此条数据吗',
+  selectTree: true
 }
 export { dialogConfig }

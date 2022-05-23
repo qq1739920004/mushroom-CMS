@@ -55,4 +55,21 @@ const getBread = (path: string, Menus: any) => {
   return breadItem
 }
 
-export { routerFilter, MenusId, first, getBread }
+//获取此角色所拥有的叶子权限（用于回选）
+function roleMenusSelect(menu: any) {
+  const menus: number[] = []
+  function roleMenus(men: any) {
+    men.forEach((menu: any) => {
+      if (menu.children) {
+        roleMenus(menu.children)
+      } else {
+        menus.push(menu.id)
+      }
+    })
+  }
+  roleMenus(menu)
+
+  return menus
+}
+
+export { routerFilter, MenusId, first, getBread, roleMenusSelect }

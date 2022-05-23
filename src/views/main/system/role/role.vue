@@ -9,13 +9,14 @@
         dialogFromDatas,
         dialogLFrom
       }"
+      :munusList="munusList"
     ></list-table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-
+import { defineComponent, ref } from 'vue'
+import { useStore } from 'vuex'
 import fromL from '@/components-ui/mainInput' //输入框组件
 import listTable from '@/components-ui/listTable/listTable.vue' //表格组件
 
@@ -32,6 +33,14 @@ export default defineComponent({
     listTable
   },
   setup() {
+    const store = useStore()
+    let munusList = ref()
+    store
+      .dispatch('listModule/ListRequest', { pageName: 'menu' })
+      .then((res) => {
+        munusList.value = res
+      })
+
     return {
       LFrom,
       fromDatas,
@@ -39,7 +48,8 @@ export default defineComponent({
       netWorkConfig,
       dialogConfig,
       dialogLFrom,
-      dialogFromDatas
+      dialogFromDatas,
+      munusList
     }
   }
 })

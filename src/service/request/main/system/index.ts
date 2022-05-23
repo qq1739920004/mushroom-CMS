@@ -10,7 +10,7 @@ const loginPath: systemRequestType = {
   department: { url: 'department/list', method: 'post' }
 }
 
-export function listServer(pageName: systemRequestObjType, queryInfo: any) {
+export function listServer(pageName: systemRequestObjType, queryInfo?: any) {
   // console.log(queryInfo)
   return KRLRequest.request({
     url: loginPath[`${pageName}`].url,

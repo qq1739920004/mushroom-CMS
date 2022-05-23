@@ -16,6 +16,8 @@
           <from-l v-bind="mirrorDialogLFrom" v-model="fromData"></from-l>
         </template>
       </div>
+      <slot name="tree"> </slot>
+
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogChange = false">取消</el-button>
