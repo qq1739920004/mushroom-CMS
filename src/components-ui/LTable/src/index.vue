@@ -141,6 +141,7 @@ export default defineComponent({
   padding-left: 10px !important;
   padding-right: 10px !important;
 }
+
 .header {
   background-color: white;
   display: flex;
@@ -150,7 +151,5 @@ export default defineComponent({
 .handler {
   display: flex;
   align-items: center;
-}
-::v-deep .is-center {
 }
 </style>

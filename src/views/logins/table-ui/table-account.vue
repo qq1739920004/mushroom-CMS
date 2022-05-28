@@ -17,7 +17,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import type { Ref } from 'vue'
 
 import type { ElForm } from 'element-plus'
 
@@ -49,6 +48,9 @@ export default defineComponent({
           }
           // 2.开始进行登录验证
           await store.dispatch('loginModule/loginRequest', { ...userData })
+          //请求角色列表，部门列表，角色管理页面的编辑要用
+          store.dispatch('roleAndDepartment')
+
           router.push('/main')
         }
       })

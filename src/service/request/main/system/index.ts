@@ -7,7 +7,8 @@ const loginPath: systemRequestType = {
   role: { url: '/role/list', method: 'post' },
   goods: { url: '/goods/list', method: 'post' },
   menu: { url: '/menu/list', method: 'post' },
-  department: { url: 'department/list', method: 'post' }
+  department: { url: 'department/list', method: 'post' },
+  category: { url: 'category/list', method: 'post' }
 }
 
 export function listServer(pageName: systemRequestObjType, queryInfo?: any) {

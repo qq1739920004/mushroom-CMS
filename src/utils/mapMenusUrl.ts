@@ -23,6 +23,9 @@ const routerFilter = (Menus: any[]) => {
         if (!first) {
           first = router.path
         }
+        if (router.path == '/main/analysis/dashboard') {
+          first = router.path
+        }
         routers.push(router)
       }
     } else {

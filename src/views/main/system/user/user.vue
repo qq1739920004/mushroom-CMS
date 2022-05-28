@@ -5,7 +5,7 @@
       v-model="fromData"
       @serachNetwork="serachNetwork"
     ></from-l>
-    <listTable
+    <list-table
       ref="fromLRef"
       v-bind="{
         LTabelConfig,
@@ -14,7 +14,7 @@
         dialogFromDatas
       }"
       :dialogLFrom="dialogLFromRef"
-    ></listTable>
+    ></list-table>
   </div>
 </template>
 

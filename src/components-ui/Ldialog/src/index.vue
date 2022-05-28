@@ -16,7 +16,7 @@
           <from-l v-bind="mirrorDialogLFrom" v-model="fromData"></from-l>
         </template>
       </div>
-      <slot name="tree"> </slot>
+      <slot> </slot>
 
       <template #footer>
         <span class="dialog-footer">

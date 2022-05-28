@@ -11,6 +11,10 @@ type LField =
   | 'departmentId'
   | 'roleId'
   | 'createAt'
+  | 'type'
+  | 'url'
+  | 'leader'
+  | 'parentId'
 
 export interface LFromItem {
   type: LFromType //类型

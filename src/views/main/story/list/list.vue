@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>352435</h2>
+  <div class="list">
+    <h2>维护</h2>
   </div>
 </template>
 
@@ -8,10 +8,15 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  name: 'list',
   setup() {
     return {}
   }
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+h2 {
+  text-align: center;
+}
+</style>

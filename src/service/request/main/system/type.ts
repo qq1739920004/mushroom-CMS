@@ -6,6 +6,7 @@ export interface systemRequestType {
   goods: requestInfo
   menu: requestInfo
   department: requestInfo
+  category: requestInfo
 }
 
 export type systemRequestObjType =

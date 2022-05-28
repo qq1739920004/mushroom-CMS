@@ -1,6 +1,6 @@
 <template>
-  <div class="user">
-    <h2>user</h2>
+  <div class="chat">
+    <h2>维护</h2>
   </div>
 </template>
 
@@ -8,11 +8,15 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'user',
+  name: 'chat',
   setup() {
     return {}
   }
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+h2 {
+  text-align: center;
+}
+</style>

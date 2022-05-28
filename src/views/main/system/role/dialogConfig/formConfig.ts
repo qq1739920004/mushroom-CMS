@@ -2,8 +2,6 @@ import type { LFromConfig } from '@/components-ui/mainInput/types/type'
 
 //1.输入框配置
 
-//1.1获取角色，部门列表
-
 const dialogLFrom: LFromConfig = {
   fromItem: [
     {

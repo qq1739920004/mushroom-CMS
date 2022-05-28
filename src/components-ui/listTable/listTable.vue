@@ -14,7 +14,7 @@
             type="primary"
             size="default"
             @click="centerDialogVisibleChange('create', 1)"
-            >新建用户</el-button
+            >{{ dialogConfig?.title ? dialogConfig.title : '新建' }}</el-button
           >
         </div>
       </template>
@@ -83,21 +83,22 @@
       v-bind="{ dialogConfig, dialogLFrom, dialogFromDatas }"
       @deleteRequest="centerDialogVisibleChangeMirror"
     >
-      <template v-if="dialogConfig.selectTree && dialogType == 'create'" #tree>
+      <div class="menu-tree" v-if="munusList && dialogType != 'delete'">
         <el-tree
+          ref="elTreeRef"
           :data="munusList"
           show-checkbox
           node-key="id"
           :props="{ children: 'children', label: 'name' }"
           @check="checkTree"
-        />
-      </template>
+        ></el-tree>
+      </div>
     </l-dialog>
   </template>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, Ref } from 'vue'
+import { computed, defineComponent, ref, onMounted, nextTick } from 'vue'
 import LTable from '@/components-ui/LTable/index'
 import { useStore } from 'vuex'
 
@@ -110,6 +111,7 @@ import LDialog from '@/components-ui/Ldialog/index' //点击删除按钮会跳�
 import type { dialogTypes } from './types/type'
 
 import { roleMenusSelect } from '@/utils/mapMenusUrl' //获取此角色所拥有的叶子权限（用于回选）
+import type { ElTree } from 'element-plus'
 
 export default defineComponent({
   components: {
@@ -151,7 +153,6 @@ export default defineComponent({
     const isQuery = isRole(props.netWorkConfig.pageName, 'query')
 
     //1.请求用户表格数据
-    console.log(props.dialogConfig?.selectTree)
     const store = useStore()
     let propsList: any
     let copyValue: any //用于存储input搜索的内容，改变分页器的时候需要用到
@@ -170,7 +171,6 @@ export default defineComponent({
         if (createAt) {
           createAt['0'] = purify(createAt['0'])
           createAt['1'] = purify(createAt['1'])
-          console.log(value?.createAt)
         }
 
         purifyValue = { id, name, password, createAt }
@@ -233,6 +233,8 @@ export default defineComponent({
     //对话框是否跳出
     const centerDialogVisible = ref(false)
     const dialogType = ref<dialogTypes>()
+    const elTreeRef = ref<InstanceType<typeof ElTree>>() //拿树形组件的
+
     //调用删除/编辑/新建操作
     // 保存row
     let rowData: any
@@ -249,6 +251,13 @@ export default defineComponent({
           dialogType.value = queryInfo
         }
         rowData = row
+        if (queryInfo == 'update' && rowData.row.menuList) {
+          const roleMenus = roleMenusSelect(rowData.row.menuList)
+          //因为是插槽所以要点击显示出来才能显示，刚刚点击的时候tree树还没显示出来就执行这部分代码了，所以要写在netTick里面在下次dom更新执行等他显示了才会拿得到元素
+          nextTick(() => {
+            elTreeRef.value?.setCheckedKeys(roleMenus, false)
+          })
+        }
       } else {
         if (queryInfo?.demand == 'delete') {
           //整理好delete需要的参数
@@ -266,7 +275,6 @@ export default defineComponent({
           await store.dispatch('listModule/createRequest', queryInfo)
         } else if (queryInfo?.demand == 'update') {
           dialogType.value = 'update'
-          console.log(rowData.row)
           // 编辑的操作
           //把新建的那几个item去掉
           let infoAll: any = {}
@@ -281,7 +289,7 @@ export default defineComponent({
           queryInfo.id = rowData.row.id
           //请求vuex
           queryInfo.info = { ...queryInfo.info, ...otherMenus.value }
-          const roleMenus = roleMenusSelect(rowData.row.menuList)
+
           await store.dispatch('listModule/updateRequest', queryInfo)
         }
       }
@@ -293,7 +301,6 @@ export default defineComponent({
       const { checkedKeys, halfCheckedKeys } = data2
       const menuList = [...checkedKeys, ...halfCheckedKeys]
       otherMenus.value = { menuList }
-      console.log(otherMenus.value)
     }
 
     return {
@@ -310,7 +317,8 @@ export default defineComponent({
       centerDialogVisibleChange,
       centerDialogVisibleChangeMirror,
       dialogType,
-      checkTree
+      checkTree,
+      elTreeRef
     }
   }
 })

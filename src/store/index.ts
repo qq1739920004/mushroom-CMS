@@ -2,10 +2,13 @@ import { createStore, Store, useStore } from 'vuex'
 //模块
 import loginModule from './login/index'
 import listModule from './main/system/index'
+import { dashboardModule } from './main/analysis/dashboard/index'
 //模块里的类型
 import type { RootState, RootStateLogin } from './type'
 
 import { listServer } from '@/service/request/main/system/index'
+
+import storage from '@/utils/utilsLocalstorage'
 
 const store = createStore<RootState>({
   state: () => {
@@ -39,12 +42,14 @@ const store = createStore<RootState>({
       commit('departmentCountChange', departmentList.data.list)
     }
   },
-  modules: { loginModule, listModule }
+  modules: { loginModule, listModule, dashboardModule }
 })
 
 async function RootstateStart() {
-  await store.commit('loginModule/dataStart')
-  store.dispatch('roleAndDepartment')
+  await store.dispatch('loginModule/dataStart')
+  if (storage.getItem('token')) {
+    store.dispatch('roleAndDepartment')
+  }
 }
 //可以让我们在除了setup里面的地方使用useStore()
 function useStoreLogin(): Store<RootStateLogin> {

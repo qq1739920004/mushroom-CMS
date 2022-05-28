@@ -24,7 +24,9 @@ const listModule: Module<listState, RootState> = {
       menuList: [],
       menuCount: 0,
       departmentList: [],
-      departmentCount: 0
+      departmentCount: 0,
+      categoryList: [],
+      categoryCount: 0
     }
   },
   mutations: {
@@ -53,10 +55,16 @@ const listModule: Module<listState, RootState> = {
       state.menuCount = value
     },
     departmentListChange(state, value) {
-      state.departmentCount = value
+      state.departmentList = value
     },
     departmentCountChange(state, value) {
-      state.departmentList = value
+      state.departmentCount = value
+    },
+    categoryListChange(state, value) {
+      state.categoryList = value
+    },
+    categoryCountChange(state, value) {
+      state.categoryCount = value
     }
   },
   getters: {
@@ -80,6 +88,10 @@ const listModule: Module<listState, RootState> = {
       //把请求得到的数据拿来给state的属性赋值
       commit(`${payload.pageName}ListChange`, ListResult.data.list)
       commit(`${payload.pageName}CountChange`, ListResult.data.totalCount)
+      if (!ListResult.data.totalCount) {
+        commit(`${payload.pageName}CountChange`, ListResult.data.list.length)
+      }
+
       // 返回数据
       return ListResult.data.list
     },

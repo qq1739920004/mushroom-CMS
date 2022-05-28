@@ -5,10 +5,12 @@ class utlisLocalstorage {
   }
   getItem(key: string) {
     const _idata: any = window.localStorage.getItem(key)
-    return JSON.parse(_idata)
+    if (_idata) {
+      return JSON.parse(_idata)
+    }
   }
   removeItem(key: string) {
-    const _idata: any = window.localStorage.removeItem(key)
+    window.localStorage.removeItem(key)
     return
   }
 }

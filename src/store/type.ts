@@ -1,5 +1,6 @@
 import { loginState } from './login/type'
 import { listState } from './main/system/type'
+import { IDashboardState } from './main/analysis/dashboard/type'
 
 export interface RootState {
   name: string
@@ -11,6 +12,7 @@ export interface RootState {
 interface StateLogin {
   loginModule: loginState
   listModule: listState
+  dashboardModule: IDashboardState
 }
 
 export type RootStateLogin = StateLogin & RootState

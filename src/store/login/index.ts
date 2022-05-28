@@ -42,8 +42,33 @@ const loginModule: Module<loginState, RootState> = {
     },
     changeUserUserRoleAll(state, userRoleAll: any) {
       state.userRoleAll = userRoleAll
+    }
+  },
+  actions: {
+    async loginRequest({ commit }, userData) {
+      //请求用户登录
+      const { id, token } = await (await LoginService(userData)).data
+      commit('changeToken', token)
+      commit('changeId', id)
+      //请求用户信息
+      const userInfo = (await LoginUserData(id)).data
+      storage.setItem('userInfo', userInfo)
+      commit('changeUserInfo', userInfo)
+      //请求用户菜单
+      const userMenus = (await LoginMenus(userInfo.role.id)).data
+      storage.setItem('userMenus', userMenus)
+      commit('changeUserMenus', userMenus)
+      //第一次请求要注册好此用户独有的路由
+      const routes = routerFilter(userMenus)
+      routes.forEach((item) => {
+        router.addRoute('main', item)
+      })
+      //对用户权限进行查找
+      const res = roleDicide(userMenus)
+      storage.setItem('userRoleAll', res)
+      commit('changeUserUserRoleAll', res)
     },
-    dataStart(state) {
+    dataStart({ state }) {
       if (storage.getItem('token')) {
         state.token = storage.getItem('token')
       }
@@ -60,26 +85,6 @@ const loginModule: Module<loginState, RootState> = {
       if (storage.getItem('userRoleAll')) {
         state.userRoleAll = storage.getItem('userRoleAll')
       }
-    }
-  },
-  actions: {
-    async loginRequest({ commit }, userData) {
-      //请求用户登录
-      const { id, token } = (await LoginService(userData)).data
-      commit('changeToken', token)
-      commit('changeId', id)
-      //请求用户信息
-      const userInfo = (await LoginUserData(id)).data
-      storage.setItem('userInfo', userInfo)
-      commit('changeUserInfo', userInfo)
-      //请求用户菜单
-      const userMenus = (await LoginMenus(id)).data
-      storage.setItem('userMenus', userMenus)
-      commit('changeUserMenus', userMenus)
-      //对用户权限进行查找
-      const res = roleDicide(userMenus)
-      storage.setItem('userRoleAll', res)
-      commit('changeUserUserRoleAll', res)
     }
   }
 }
