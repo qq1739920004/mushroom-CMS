@@ -12,7 +12,6 @@ const loginPath: systemRequestType = {
 }
 
 export function listServer(pageName: systemRequestObjType, queryInfo?: any) {
-  // console.log(queryInfo)
   return KRLRequest.request({
     url: loginPath[`${pageName}`].url,
     method: loginPath[`${pageName}`].method,

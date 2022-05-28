@@ -82,7 +82,6 @@ const listModule: Module<listState, RootState> = {
   actions: {
     //1.请求列表请求
     async ListRequest({ commit }, payload: any) {
-      // console.log(payload)
       //对页面发送请求
       const ListResult = await listServer(payload.pageName, payload.queryInfo)
       //把请求得到的数据拿来给state的属性赋值
