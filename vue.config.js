@@ -17,16 +17,21 @@ module.exports = defineConfig({
     }
   },
   configureWebpack: {
-    plugins: [
-      AutoImport({
-        resolvers: [ElementPlusResolver()]
-      }),
-      Components({
-        resolvers: [ElementPlusResolver()]
-      }),
-      require('unplugin-element-plus/webpack')({
-        // options
-      })
-    ]
+    // plugins: [
+    //   AutoImport({
+    //     resolvers: [ElementPlusResolver()]
+    //   }),
+    //   Components({
+    //     resolvers: [ElementPlusResolver()]
+    //   }),
+    //   require('unplugin-element-plus/webpack')({
+    //     // options
+    //   })
+    // ]
+    resolve: {
+      alias: {
+        components: '@/components'
+      }
+    }
   }
 })
