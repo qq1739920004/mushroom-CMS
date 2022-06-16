@@ -152,6 +152,7 @@ export default defineComponent({
     const isDelete = isRole(props.netWorkConfig.pageName, 'delete')
     const isQuery = isRole(props.netWorkConfig.pageName, 'query')
 
+
     //1.请求用户表格数据
     const store = useStore()
     let propsList: any
@@ -318,7 +319,7 @@ export default defineComponent({
       centerDialogVisibleChangeMirror,
       dialogType,
       checkTree,
-      elTreeRef
+      elTreeRef,
     }
   }
 })
@@ -328,4 +329,5 @@ export default defineComponent({
 .userTabel {
   margin-top: 30px;
 }
+
 </style>

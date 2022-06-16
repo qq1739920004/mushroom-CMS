@@ -20,4 +20,12 @@ export default defineComponent({
   color: #2c3e50;
   margin-top: 60px;
 }
+
+body .kl-dialog .el-dialog__body,body .kl-dialog .el-dialog__header{
+  padding: 0;
+
+}
+body .kl-dialog .el-dialog__headerbtn{
+  display: none;
+}
 </style>

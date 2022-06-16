@@ -8,8 +8,16 @@
             :src="row.row.imgUrl"
             fit="fill"
             :initial-index="4"
-            :z-index="999"
+            @click="dilogIsShow" :data-id='row.row.imgUrl'
           />
+<teleport to='body'>
+          <el-dialog  v-model="dialogShow" v-if="dialogUrl==row.row.imgUrl" width='20%' draggable custom-class="kl-dialog"
+            >
+            <el-image
+              :src="row.row.imgUrl"
+              :initial-index="4"
+              :z-index="999"
+          /></el-dialog></teleport>
         </div>
       </template>
     </listTable>
@@ -30,6 +38,14 @@ export default defineComponent({
   name: 'goods',
   setup() {
     let isShowTable = ref(true)
+    let dialogShow = ref(false)
+    let dialogUrl=ref('')
+    //遮罩层显示
+    function dilogIsShow(e:any) {
+      console.log(e.target.dataset.id)
+      dialogShow.value=true
+      dialogUrl.value = e.target.dataset.id
+    }
     //搜索按钮点击后的事件
     const fromLRef = ref<InstanceType<typeof listTable>>()
     function serachNetwork(newFromData: any) {
@@ -41,7 +57,10 @@ export default defineComponent({
       netWorkConfig,
       serachNetwork,
       fromLRef,
-      isShowTable
+      isShowTable,
+      dialogShow,
+      dilogIsShow,
+      dialogUrl
     }
   }
 })
@@ -61,4 +80,8 @@ export default defineComponent({
   position: relative;
   z-index: 999999 !important;
 }
+.kl-dialog .el-dialog__body{
+  padding: 0 !important;
+}
+
 </style>
